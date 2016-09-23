@@ -1,4 +1,5 @@
 #include "curve_segmentation.h"
+#include "mex.h"
 
 // The indexing:
 // Assume we have M neighbors in connectivity.
@@ -124,9 +125,17 @@ void edge_segmentation( const matrix<double>& data,
   int num_elements = mesh_map.numel();
   int num_points_per_element = connectivity.M;
   int num_edges_per_point = num_points_per_element*num_points_per_element;
+  
+  mexPrintf("\nDebug information below:");
+  mexPrintf("\nValue max_index is %15.0f", float(max_index));
+  mexPrintf("\nmesh_map size   is %15.0f", float(mesh_map.numel()));
+  mexPrintf("\nPts per element is %15.0f", float(num_points_per_element));
+  mexPrintf("\nRequired max    is %15.0f\n", float(mesh_map.numel())*float(num_points_per_element));
 
-  //if (max_index < mesh_map.numel()*num_points_per_element)
-    //  mexErrMsgTxt("Problem is too large, index will overflow. Try to remove curvature penalty or lower connectivity.");
+  if (max_index < mesh_map.numel()*num_points_per_element)
+      //mexErrMsgTxt(max_index);
+      //mexErrMsgTxt(mesh_map.numel()*num_points_per_element);
+      mexErrMsgTxt("Problem is too large, index will overflow. Try to remove curvature penalty or lower connectivity.");
 
   // Total
   int num_edges = num_points_per_element*num_elements;
