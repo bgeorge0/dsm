@@ -14,7 +14,7 @@ xyz = diff_pts;
 dx = min(diff(unique(sort(diff_pts(:,1)))));
 dy = min(diff(unique(sort(diff_pts(:,2)))));
 dz = min(diff(unique(sort(diff_pts(:,3)))));
-dxyz = [dx dy dz]*.2;
+dxyz = [dx dy dz];%*.2;
 
 min_x = min(diff_pts(:,1));
 min_y = min(diff_pts(:,2));
