@@ -14,6 +14,12 @@ function [H, fx, fy, fz] = circlePlane3D( center, normal, radious, theintv, norm
 %   Version 1.00
 %   Aug, 2012
 %--------------------------------------------------------------------------
+
+% Check for case normal = [0 0 x];
+if normal(1) == 0 && normal(2) == 0
+    normal(1) = 1e-5 .* radious;
+end
+
 %generate circle polygon
 t = 0:theintv:2*pi;
 x = radious*cos(t);
