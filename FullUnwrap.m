@@ -61,7 +61,7 @@ if do_plot
         pause(.1);
     end
 end
-disp(' -> DONE'); drawnow; pause
+disp(' -> DONE'); drawnow;% pause
 
 disp('Finding structure intersections')
 [perim, perim_point, overlap_matrix12] = PlaneThroughSlice_UniformCircle(structXYZ, hobbyspline, Snew, xyzD, grid_res);

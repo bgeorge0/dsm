@@ -3,7 +3,7 @@ function [dosemap, x_dist, y_dist] = Unwrapping(xyzD, Snew, perim, perim_point)
 centroid = [mean(xyzD(:,1)), mean(xyzD(:,2)), mean(xyzD(:,3))];
 
 while inpolyhedron(Snew, centroid) == 1
-    display('Moving centroid out of structure');
+    %display('Moving centroid out of structure');
     centroid = [centroid(1)+0.5, centroid(2)+0.5, centroid(3)];
 end
 centroid=[centroid(1)+1, centroid(2)+1, centroid(3)];
