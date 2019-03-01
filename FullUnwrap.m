@@ -21,7 +21,9 @@ grid_res = round(grid_res,4);
 %xyzD(:,2) = max(xyzD(:,2)) + (floor((xyzD(:,2) - max(xyzD(:,2)))/grid_res(2))*grid_res(2));
 %xyzD(:,3) = max(xyzD(:,3)) + (floor((xyzD(:,3) - max(xyzD(:,3)))/grid_res(3))*grid_res(3));
 if do_plot
-    plot3(xyzD(:,1),xyzD(:,2),xyzD(:,3),'g.')
+    mx = max(xyzD(:,4));
+    inds = xyzD(:,4) > (0.9*mx);
+    plot3(xyzD(inds,1),xyzD(inds,2),xyzD(inds,3), 'r.')
     plot3(poi1(1),poi1(2),poi1(3),'b.');
     plot3(poi2(1),poi2(2),poi2(3),'b.');
 end
