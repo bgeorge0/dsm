@@ -69,6 +69,7 @@ perim_point = cell(EQUISPLINE_PTS, SECTIONS+1); % For legacy reasons, this needs
 perim = cell(EQUISPLINE_PTS, SECTIONS+1);       % For legacy reasons, this needs to be EQUISPLINE_PTS long
 poly_store = cell(EQUISPLINE_PTS, 1);           % For legacy reasons, this needs to be EQUISPLINE_PTS long
 line_store = cell(EQUISPLINE_PTS, SECTIONS+1);  % For legacy reasons, this needs to be EQUISPLINE_PTS long
+h = waitbar(0,'casting');
 for i = 1:length(CENTRES)
     ray_dir=double.empty;
     % NEW METHOD
@@ -107,7 +108,9 @@ for i = 1:length(CENTRES)
     for k=1:length(poly_store{SLICE_INDEXES(i)})%-1
         line_store{SLICE_INDEXES(i),k} = createLine3d(poly_store{SLICE_INDEXES(i)}(k,:), equispline(SLICE_INDEXES(i),:));
     end
+    waitbar(i/length(CENTRES),h);
 end
+close(h);
 
 disp(' -> Determining overlap');
 for i=1:size(equispline,1)-1
@@ -173,7 +176,7 @@ for j=1:size(equispline,1)-1
 end
 
 % Do some mega plotting!
-if true
+if false
     disp(' -> Doing mega plotting');
     figure
     hold on

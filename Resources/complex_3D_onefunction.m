@@ -32,13 +32,13 @@ data(sub2ind(size(data), floor(xyzi(:,1)), floor(xyzi(:,2)), floor(xyzi(:,3)) ))
 % Start set
 % True at voxels where it allowed to start
 start_set = false(size(data));
-[xi,yi,zi] = pt2ind(poi1(1),poi1(2),poi1(3), dxyz, min_xyz);
+[xi,yi,zi] = pt2ind(poi1(:,1),poi1(:,2),poi1(:,3), dxyz, min_xyz);
 start_set(floor(xi),floor(yi),floor(zi)) = true;
 
 % End set
 % True at voxels where it allowed to end
 end_set = false(size(data));
-[xi,yi,zi] = pt2ind(poi2(1),poi2(2),poi2(3), dxyz, min_xyz);
+[xi,yi,zi] = pt2ind(poi2(:,1),poi2(:,2),poi2(:,3), dxyz, min_xyz);
 end_set(floor(xi),floor(yi),floor(zi)) = true;
 
 % Set disallowed

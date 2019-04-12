@@ -1,6 +1,6 @@
 function [dosemap] = FullUnwrap(xyzD, poi1, poi2, xyz_stom, grid_res)
 
-do_plot = true;
+do_plot = false;
 if do_plot
     figure;
     hold on;
@@ -17,9 +17,9 @@ poi2 = round(poi2,4);
 xyz_stom = round(xyz_stom,4);
 grid_res = round(grid_res,4);
 % Fix PTS if not on uniform grid (which seems to happen at random)
-%xyzD(:,1) = max(xyzD(:,1)) + (floor((xyzD(:,1) - max(xyzD(:,1)))/grid_res(1))*grid_res(1));
-%xyzD(:,2) = max(xyzD(:,2)) + (floor((xyzD(:,2) - max(xyzD(:,2)))/grid_res(2))*grid_res(2));
-%xyzD(:,3) = max(xyzD(:,3)) + (floor((xyzD(:,3) - max(xyzD(:,3)))/grid_res(3))*grid_res(3));
+xyzD(:,1) = max(xyzD(:,1)) + (floor((xyzD(:,1) - max(xyzD(:,1)))/grid_res(1))*grid_res(1));
+xyzD(:,2) = max(xyzD(:,2)) + (floor((xyzD(:,2) - max(xyzD(:,2)))/grid_res(2))*grid_res(2));
+xyzD(:,3) = max(xyzD(:,3)) + (floor((xyzD(:,3) - max(xyzD(:,3)))/grid_res(3))*grid_res(3));
 if do_plot
     plot3(xyzD(:,1),xyzD(:,2),xyzD(:,3),'g.')
     plot3(poi1(1),poi1(2),poi1(3),'b.');
@@ -34,8 +34,8 @@ poi1 = xyzD(poi1IDX,1:3);
 poi2IDX = knnsearch(xyzD(:,1:3),poi2);
 poi2 = xyzD(poi2IDX,1:3);
 if do_plot
-    plot3(poi1(1),poi1(2),poi1(3),'bx');
-    plot3(poi2(1),poi2(2),poi2(3),'bx');
+    plot3(poi1(:,1),poi1(:,2),poi1(:,3),'bx');
+    plot3(poi2(:,1),poi2(:,2),poi2(:,3),'bx');
 end
 disp(' -> DONE'); drawnow; %pause
 

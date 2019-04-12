@@ -1,6 +1,6 @@
 function [dosemap, x_dist, y_dist] = Unwrapping(xyzD, Snew, perim, perim_point)
 
-centroid = [mean(xyzD(:,1)), mean(xyzD(:,2)), mean(xyzD(:,3))];
+centroid = mean(xyzD(:,1:3));
 
 while inpolyhedron(Snew, centroid) == 1
     %display('Moving centroid out of structure');
@@ -181,9 +181,13 @@ end
 % end
 % %%%%%%%%%%
 
-dosemap=double.empty;
-for i=1:size(band_shift,2)
-    dosemap = vertcat(dosemap,band_shift{i}(:,4)');
-end
+% Old code
+%dosemap=double.empty;
+%for i=1:size(band_shift,2)
+%    dosemap = vertcat(dosemap,band_shift{i}(:,4)');
+%end
+% New code
+dosemap = cell2mat(band_shift); % Get all band_shift data as big matrix
+dosemap = dosemap(:,4:4:end)';   % Every fourth column is the dose, need to transpose to make it into rows of dosemap
 %imagesc(dosemap);
 %set(gca, 'YDir', 'normal');
