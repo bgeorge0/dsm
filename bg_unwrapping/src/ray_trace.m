@@ -12,7 +12,7 @@ mod = py.importlib.import_module('ray_tracing');
 py.importlib.reload(mod);
 
 % Call the 'main' method with all the data
-UNWRAPPING_DATA.as_points.surface_points_np = mod.main(meshX_np, meshY_np, meshZ_np, full_path_np, unwrap_centre_np, 30);
+UNWRAPPING_DATA.as_points.surface_points_np = mod.main(meshX_np, meshY_np, meshZ_np, full_path_np, unwrap_centre_np, to_np(UNWRAPPING_DATA.options.RAYS));
 UNWRAPPING_DATA.as_points.surface_points = from_np(UNWRAPPING_DATA.as_points.surface_points_np);
 
 end

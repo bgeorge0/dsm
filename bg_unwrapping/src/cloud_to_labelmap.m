@@ -5,9 +5,9 @@ function UNWRAPPING_DATA = cloud_to_labelmap(UNWRAPPING_DATA)
 point_cloud = UNWRAPPING_DATA.as_points.point_cloud;
 
 % Some values that we can change in this function
-gridX = 100; % Don't make this too big - will impact the curve fitting
-gridY = 100;
-gridZ = 100;
+gridX = UNWRAPPING_DATA.voxelise_size_x; % Don't make this too big - will impact the curve fitting
+gridY = UNWRAPPING_DATA.voxelise_size_y;
+gridZ = UNWRAPPING_DATA.voxelise_size_z;
 coeff = 1; % Should be 1.0
 
 % To get same naming as example

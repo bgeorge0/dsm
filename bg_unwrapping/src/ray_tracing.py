@@ -125,8 +125,7 @@ def rotation_matrix(axis, theta):
                      [2 * (bd + ac), 2 * (cd - ab), aa + dd - bb - cc]])
 
 def main(meshX, meshY, meshZ, full_path, unwrap_centre,rays_to_cast):
-	
-	return_array = np.zeros((meshX.shape[1]-2,rays_to_cast,3),dtype=np.double)
+	return_array = np.zeros((full_path.shape[0]-2,int(rays_to_cast),3),dtype=np.double)
 	
 	# Call it all in here!
 	def triangles_in_surf():
@@ -138,15 +137,11 @@ def main(meshX, meshY, meshZ, full_path, unwrap_centre,rays_to_cast):
 			yield tri
 	
 	for j, cax_index in enumerate(range(1, full_path.shape[0]-1)):
-		print(cax_index)
 		p0 = full_path[cax_index,:]
 		p1 = full_path[cax_index+1,:]
 		for i, ray in enumerate(rays_from_cax(p0, p1, unwrap_centre, rays_to_cast)):
 			candidate = None
 			for tri in triangles_in_surf():
-				#p0 = np.array([3,3,0])
-				#ray = np.array([3,3,0.5])
-				#tri = np.array([[4,2,3],[5,4,1],[1,4,0]])
 				if ray_intersect_triangle(p0, ray, tri):
 					this_intersection = LinePlaneCollision(p0, ray, tri)
 					if candidate is None:
@@ -155,19 +150,3 @@ def main(meshX, meshY, meshZ, full_path, unwrap_centre,rays_to_cast):
 						candidate = this_intersection
 			return_array[j,i] = candidate
 	return return_array
-	
-	#pp.pprint(shortest_path)
-	#pp.pprint(unwrap_centre)
-	#def triangles_in_surf():
-	#	yield np.array([[0.0, 1.0, 0.0], [1.0, -1.0, 0.0], [-1.0, -1.0, 0.0]]) # Triangle
-	#	yield np.array([[0.0, 1.0, 1.0], [1.0, -1.0, 1.0], [-1.0, -1.0, 1.0]]) # Triangle
-	#	yield np.array([[0.0, 1.0, 2.0], [1.0, -1.0, 2.0], [-1.0, -1.0, 2.0]]) # Triangle
-
-if __name__=="__main__":		
-	p0 = np.array([0.0, 0.0, -1.0]) # Point on CAX
-	p1 = np.array([1.0, 0.0, -1.0]) # Next point on CAX
-	pu = np.array([0.0, 0.0, -0.5]) # Unwrapping centre
-	for ray in rays_from_cax(p0, p1, pu, 1):
-		for tri in triangles_in_surf():
-			if ray_intersect_triangle(p0, ray, tri):
-				intersection = LinePlaneCollision(p0, ray, tri)
