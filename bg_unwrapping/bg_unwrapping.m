@@ -49,7 +49,7 @@ toc
 tic
 disp('Ray tracing')
 UNWRAPPING_DATA = ray_trace(UNWRAPPING_DATA);
-doc
+toc
 
 % Find the dose at each surface point and form into flattened DSM
 disp('Flatten')
