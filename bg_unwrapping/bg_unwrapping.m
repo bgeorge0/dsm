@@ -9,9 +9,14 @@ data_select = 'data1';
 tic
 disp('Doing setup')
 UNWRAPPING_DATA = struct;
-UNWRAPPING_DATA.as_points.START_POIs = test_startPOI(data_select);
-UNWRAPPING_DATA.as_points.FINISH_POIs = test_endPOI(data_select);
-UNWRAPPING_DATA.as_points.point_cloudD = test_structXYZD(data_select);
+START_POIs = getXYZD(25,1,planC);
+FINISH_POIs = getXYZD(26,1,planC);
+UNWRAPPING_DATA.as_points.START_POIs = START_POIs(:,1:3);
+UNWRAPPING_DATA.as_points.FINISH_POIs = FINISH_POIs(:,1:3);
+[UNWRAPPING_DATA.as_points.point_cloudD,~] = getXYZD(2,1,planC);
+%UNWRAPPING_DATA.as_points.START_POIs = test_startPOI(data_select);
+%UNWRAPPING_DATA.as_points.FINISH_POIs = test_endPOI(data_select);
+%UNWRAPPING_DATA.as_points.point_cloudD = test_structXYZD(data_select);
 UNWRAPPING_DATA.as_points.point_cloud = UNWRAPPING_DATA.as_points.point_cloudD(:,1:3);
 UNWRAPPING_DATA.as_points.unwrap_centre = (max(UNWRAPPING_DATA.as_points.point_cloud) + min(UNWRAPPING_DATA.as_points.point_cloud))/2;
 
