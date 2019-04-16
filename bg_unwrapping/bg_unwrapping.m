@@ -2,23 +2,25 @@
 % Make sure we've got the files loaded
 addpath(genpath(pwd));
 
+data_select = 'data1';
+
 % Load some data 
 % This will in theory be from CERR
 tic
 disp('Doing setup')
 UNWRAPPING_DATA = struct;
-UNWRAPPING_DATA.as_points.START_POIs = test_startPOI;
-UNWRAPPING_DATA.as_points.FINISH_POIs = test_endPOI;
-UNWRAPPING_DATA.as_points.point_cloudD = test_structXYZD;
+UNWRAPPING_DATA.as_points.START_POIs = test_startPOI(data_select);
+UNWRAPPING_DATA.as_points.FINISH_POIs = test_endPOI(data_select);
+UNWRAPPING_DATA.as_points.point_cloudD = test_structXYZD(data_select);
 UNWRAPPING_DATA.as_points.point_cloud = UNWRAPPING_DATA.as_points.point_cloudD(:,1:3);
 UNWRAPPING_DATA.as_points.unwrap_centre = (max(UNWRAPPING_DATA.as_points.point_cloud) + min(UNWRAPPING_DATA.as_points.point_cloud))/2;
 
 % Remove this later
-UNWRAPPING_DATA.as_points.point_cloudD(:,4) = sqrt(sum((UNWRAPPING_DATA.as_points.point_cloudD(:,1:3) - UNWRAPPING_DATA.as_points.unwrap_centre).^2,2));
+%UNWRAPPING_DATA.as_points.point_cloudD(:,4) = sqrt(sum((UNWRAPPING_DATA.as_points.point_cloudD(:,1:3) - UNWRAPPING_DATA.as_points.unwrap_centre).^2,2));
 
 % Set some options
-UNWRAPPING_DATA.options.SLICES      = 10;
-UNWRAPPING_DATA.options.RAYS        = 10;
+UNWRAPPING_DATA.options.SLICES      = 30;
+UNWRAPPING_DATA.options.RAYS        = 30;
 UNWRAPPING_DATA.voxelise_size_x     = 100;
 UNWRAPPING_DATA.voxelise_size_y     = 100;
 UNWRAPPING_DATA.voxelise_size_z     = 100;
