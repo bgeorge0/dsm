@@ -1,5 +1,11 @@
 function UNWRAPPING_DATA = ray_trace(UNWRAPPING_DATA)
 
+% Estimate time to complete
+time_const = 4.5e-5;
+checks_to_complete = size(UNWRAPPING_DATA.as_tri.meshX,2) * UNWRAPPING_DATA.options.SLICES * UNWRAPPING_DATA.options.RAYS;
+estimated_time = checks_to_complete * time_const;
+fprintf('Estimated time to complete ray tracing is %.0f seconds.\n', estimated_time);
+
 % This is the complex one...
 meshX_np = to_np(UNWRAPPING_DATA.as_tri.meshX);
 meshY_np = to_np(UNWRAPPING_DATA.as_tri.meshY);

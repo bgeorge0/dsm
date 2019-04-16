@@ -17,8 +17,8 @@ UNWRAPPING_DATA.as_points.unwrap_centre = (max(UNWRAPPING_DATA.as_points.point_c
 UNWRAPPING_DATA.as_points.point_cloudD(:,4) = sqrt(sum((UNWRAPPING_DATA.as_points.point_cloudD(:,1:3) - UNWRAPPING_DATA.as_points.unwrap_centre).^2,2));
 
 % Set some options
-UNWRAPPING_DATA.options.SLICES      = 16;
-UNWRAPPING_DATA.options.RAYS        = 16;
+UNWRAPPING_DATA.options.SLICES      = 10;
+UNWRAPPING_DATA.options.RAYS        = 10;
 UNWRAPPING_DATA.voxelise_size_x     = 100;
 UNWRAPPING_DATA.voxelise_size_y     = 100;
 UNWRAPPING_DATA.voxelise_size_z     = 100;
