@@ -22,12 +22,15 @@ set(hh,'FaceColor','flat',...
 axis vis3d
 alpha 0.25
 
-plot3(UNWRAPPING_DATA.as_points.shortest_path(:,1),UNWRAPPING_DATA.as_points.shortest_path(:,2),UNWRAPPING_DATA.as_points.shortest_path(:,3),'m-')
+plot3(UNWRAPPING_DATA.as_points.full_path(:,1),UNWRAPPING_DATA.as_points.full_path(:,2),UNWRAPPING_DATA.as_points.full_path(:,3),'m-')
 plot3(UNWRAPPING_DATA.as_points.unwrap_centre(1),UNWRAPPING_DATA.as_points.unwrap_centre(2),UNWRAPPING_DATA.as_points.unwrap_centre(3),'mx')
 
-sp = UNWRAPPING_DATA.as_points.surface_points;
-for i = 1:size(sp,1)
-    plot3(sp(i,:,1), sp(i,:,2), sp(i,:,3), 'r-')
+for slice_index = 1:size(UNWRAPPING_DATA.as_points.surface_points,1)
+    cax = UNWRAPPING_DATA.as_points.full_path(1+slice_index,:);
+    sp = UNWRAPPING_DATA.as_points.surface_points;%(slice_index,:,:);
+    for sp_index = 1:size(sp,2)
+        plot3([cax(1), sp(slice_index, sp_index, 1)], [cax(2), sp(slice_index, sp_index, 2)], [cax(3), sp(slice_index, sp_index, 3)], 'r-');
+    end
 end
 
 subplot(1,2,2);

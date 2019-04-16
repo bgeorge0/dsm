@@ -1,8 +1,6 @@
-import time
 import numpy as np
 import math
 import pprint as pp
-import tqdm
 
 # source: http://geomalgorithms.com/a06-_intersect-2.html
 
@@ -94,7 +92,7 @@ def LinePlaneCollision(p0, p1, triangle, epsilon=1e-6):
 # and pu is the unwrapping centre
 def rays_from_cax(p0, p1, pu, n):
 	# Find the normal of the triangle p0, p1, pu
-	planeNormal = np.cross(p0-p1, p0-pu)
+	planeNormal = np.cross(p1-p0, pu-p0)
 	# Rotate this normal by 90 degrees around p0->p1 to point in the same plane as the triangle
 	# p0 to p1 is along the CAX
 	axis = p1 - p0
@@ -136,10 +134,12 @@ def main(meshX, meshY, meshZ, full_path, unwrap_centre,rays_to_cast):
 			tri = np.array([xs, ys, zs]).T
 			yield tri
 	
-	for j, cax_index in enumerate(range(1, full_path.shape[0]-1)):
-		p0 = full_path[cax_index,:]
-		p1 = full_path[cax_index+1,:]
-		for i, ray in enumerate(rays_from_cax(p0, p1, unwrap_centre, rays_to_cast)):
+	for j, cax_index in (enumerate(range(1, full_path.shape[0]-1))):
+		pb = full_path[cax_index-1,:]	# Previous point in path
+		p0 = full_path[cax_index,:]	# This point in the path
+		pa = full_path[cax_index+1,:]	# Next point in the path
+		p_ray = p0 + (pa - pb)		# Want to unwrap perpendicular to orientaton pb -> pa
+		for i, ray in enumerate(rays_from_cax(p0, p_ray, unwrap_centre, rays_to_cast)):
 			candidate = None
 			for tri in triangles_in_surf():
 				if ray_intersect_triangle(p0, ray, tri):
@@ -149,4 +149,14 @@ def main(meshX, meshY, meshZ, full_path, unwrap_centre,rays_to_cast):
 					elif np.linalg.norm(p0 - this_intersection) < np.linalg.norm(p0 - candidate):
 						candidate = this_intersection
 			return_array[j,i] = candidate
+	# Switch the sides around so that column 1 is in the middle
+	# Therefore, it will be aligned with the hot spot in the centre of the DSM
+	tmp = return_array.copy()
+	mid = return_array.shape[1]/2
+	if return_array.shape[1]%2 == 0:
+		extra = 0
+	else:
+		extra = 1
+	return_array[:,int(mid):,:] = tmp[:,0:int(mid+extra),:]
+	return_array[:,0:int(mid),:] = tmp[:,int(mid+extra):,:]
 	return return_array

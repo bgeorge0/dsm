@@ -1,3 +1,3 @@
-function endPOI = test_endPOI
-endPOI = [2.52,0.37,-0.71];
+function poi2 = test_endPOI
+	load('data1_poi2.mat','poi2');
 end

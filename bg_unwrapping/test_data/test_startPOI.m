@@ -1,3 +1,3 @@
-function startPOI = test_startPOI
-startPOI = [-4.29,4.97,-6.96];
+function poi1 = test_startPOI
+	load('data1_poi1.mat','poi1');
 end

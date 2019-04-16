@@ -10,16 +10,18 @@ UNWRAPPING_DATA = struct;
 UNWRAPPING_DATA.as_points.START_POIs = test_startPOI;
 UNWRAPPING_DATA.as_points.FINISH_POIs = test_endPOI;
 UNWRAPPING_DATA.as_points.point_cloudD = test_structXYZD;
-UNWRAPPING_DATA.as_points.point_cloudD(:,4) = 1:9483; % REMOVE THIS LATER
 UNWRAPPING_DATA.as_points.point_cloud = UNWRAPPING_DATA.as_points.point_cloudD(:,1:3);
 UNWRAPPING_DATA.as_points.unwrap_centre = (max(UNWRAPPING_DATA.as_points.point_cloud) + min(UNWRAPPING_DATA.as_points.point_cloud))/2;
 
+% Remove this later
+UNWRAPPING_DATA.as_points.point_cloudD(:,4) = sqrt(sum((UNWRAPPING_DATA.as_points.point_cloudD(:,1:3) - UNWRAPPING_DATA.as_points.unwrap_centre).^2,2));
+
 % Set some options
-UNWRAPPING_DATA.options.SLICES = 30;
-UNWRAPPING_DATA.options.RAYS = 30;
-UNWRAPPING_DATA.voxelise_size_x = 100;
-UNWRAPPING_DATA.voxelise_size_y = 100;
-UNWRAPPING_DATA.voxelise_size_z = 100;
+UNWRAPPING_DATA.options.SLICES      = 16;
+UNWRAPPING_DATA.options.RAYS        = 16;
+UNWRAPPING_DATA.voxelise_size_x     = 100;
+UNWRAPPING_DATA.voxelise_size_y     = 100;
+UNWRAPPING_DATA.voxelise_size_z     = 100;
 
 % Do some data conversion to a voxelised labelmap
 % This is necessary for the shortest path algorithm
@@ -52,9 +54,9 @@ UNWRAPPING_DATA = ray_trace(UNWRAPPING_DATA);
 toc
 
 % Find the dose at each surface point and form into flattened DSM
-disp('Flatten')
+disp('Create DSM')
 tic
-UNWRAPPING_DATA = flatten_dsm(UNWRAPPING_DATA);
+UNWRAPPING_DATA = create_dsm(UNWRAPPING_DATA);
 toc
 
 % A nice new plot!
