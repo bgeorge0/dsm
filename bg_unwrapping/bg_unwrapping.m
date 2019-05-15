@@ -1,37 +1,32 @@
+function UNWRAPPING_DATA = bg_unwrapping(UNWRAPPING_DATA)
 % bg_unwrapping
 % Make sure we've got the files loaded
 addpath(genpath(pwd));
 
-data_select = 'data1';
-
-% Load some data 
-% This will in theory be from CERR
-tic
-disp('Doing setup')
-UNWRAPPING_DATA = struct;
-START_POIs = getXYZD(25,1,planC);
-FINISH_POIs = getXYZD(26,1,planC);
-UNWRAPPING_DATA.as_points.START_POIs = START_POIs(:,1:3);
-UNWRAPPING_DATA.as_points.FINISH_POIs = FINISH_POIs(:,1:3);
-[UNWRAPPING_DATA.as_points.point_cloudD,~] = getXYZD(2,1,planC);
-%UNWRAPPING_DATA.as_points.START_POIs = test_startPOI(data_select);
-%UNWRAPPING_DATA.as_points.FINISH_POIs = test_endPOI(data_select);
-%UNWRAPPING_DATA.as_points.point_cloudD = test_structXYZD(data_select);
-UNWRAPPING_DATA.as_points.point_cloud = UNWRAPPING_DATA.as_points.point_cloudD(:,1:3);
-UNWRAPPING_DATA.as_points.unwrap_centre = (max(UNWRAPPING_DATA.as_points.point_cloud) + min(UNWRAPPING_DATA.as_points.point_cloud))/2;
-
-% Remove this later
-%UNWRAPPING_DATA.as_points.point_cloudD(:,4) = sqrt(sum((UNWRAPPING_DATA.as_points.point_cloudD(:,1:3) - UNWRAPPING_DATA.as_points.unwrap_centre).^2,2));
-
-% Set some options
-UNWRAPPING_DATA.options.SLICES      = 30;
-UNWRAPPING_DATA.options.RAYS        = 30;
-UNWRAPPING_DATA.voxelise_size_x     = 100;
-UNWRAPPING_DATA.voxelise_size_y     = 100;
-UNWRAPPING_DATA.voxelise_size_z     = 100;
+if ~exist('UNWRAPPING_DATA','var') || isempty(UNWRAPPING_DATA)
+    % Load some data
+    data_select = 'data1';
+    UNWRAPPING_DATA = struct;
+    UNWRAPPING_DATA.as_points.START_POIs = test_startPOI(data_select);
+    UNWRAPPING_DATA.as_points.FINISH_POIs = test_endPOI(data_select);
+    UNWRAPPING_DATA.as_points.point_cloudD = test_structXYZD(data_select);
+    UNWRAPPING_DATA.as_points.point_cloud = UNWRAPPING_DATA.as_points.point_cloudD(:,1:3);
+    UNWRAPPING_DATA.as_points.unwrap_centre = (max(UNWRAPPING_DATA.as_points.point_cloud) + min(UNWRAPPING_DATA.as_points.point_cloud))/2;
+  
+    % Set some options
+    UNWRAPPING_DATA.options.SLICES      = 30;
+    UNWRAPPING_DATA.options.RAYS        = 30;
+    UNWRAPPING_DATA.voxelise_size_x     = 100;
+    UNWRAPPING_DATA.voxelise_size_y     = 100;
+    UNWRAPPING_DATA.voxelise_size_z     = 100;
+else
+    % Assume that UNWRAPPING_DATA is initialised
+end
 
 % Do some data conversion to a voxelised labelmap
 % This is necessary for the shortest path algorithm
+tic
+disp('Data conversion')
 UNWRAPPING_DATA = cloud_to_labelmap(UNWRAPPING_DATA);
 UNWRAPPING_DATA = pois_to_labelmap(UNWRAPPING_DATA);
 toc
@@ -68,4 +63,6 @@ toc
 
 % A nice new plot!
 disp('Plotting')
+figure
 UNWRAPPING_DATA = better_plotting(flipud(UNWRAPPING_DATA));
+end
