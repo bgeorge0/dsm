@@ -64,16 +64,32 @@ if ispc
     %%%%%%%%%
     % ACTION REQUIRED:
     % Point this to your Eigen include directory.
-    extra_args{end+1} = '-I"C:\Program Files\Eigen"';
+    %extra_args{end+1} = '-I"C:\Program Files\Eigen"';
     %%%%%%%%
 
     % Default installation directories for Spii and curve_extraction libraries.
-    extra_args{end+1} = '-I"C:\Program Files\curve_extraction\include"';
-    extra_args{end+1} = '-I"C:\Program Files\SPII\include"';
-    extra_args{end+1} = '-L"C:\Program Files\curve_extraction\lib"';
-    extra_args{end+1} = '-L"C:\Program Files\SPII\lib"';
+    %extra_args{end+1} = '-I"C:\Program Files\curve_extraction\include"';
+    %extra_args{end+1} = '-I"C:\Program Files\SPII\include"';
+    %extra_args{end+1} = '-L"C:\Program Files\curve_extraction\lib"';
+    %extra_args{end+1} = '-L"C:\Program Files\SPII\lib"';
+    
+    % For Windows, all required files will be located at these relative paths.
+    % x64 and x32 available
+    if contains(computer, '64')
+        extra_args{end+1} = ['-I"' current_dir filesep '..\x64\windows\curve_extraction\include"'];
+        extra_args{end+1} = ['-I"' current_dir filesep '..\x64\windows\SPII\include"'];
+        extra_args{end+1} = ['-L"' current_dir filesep '..\x64\windows\curve_extraction\lib"'];
+        extra_args{end+1} = ['-L"' current_dir filesep '..\x64\windows\SPII\lib"'];
+    else
+        extra_args{end+1} = ['-I"' current_dir filesep '..\x32\windows\curve_extraction\include"'];
+        extra_args{end+1} = ['-I"' current_dir filesep '..\x32\windows\SPII\include"'];
+        extra_args{end+1} = ['-L"' current_dir filesep '..\x32\windows\curve_extraction\lib"'];
+        extra_args{end+1} = ['-L"' current_dir filesep '..\x32\windows\SPII\lib"'];
+    end
+
+    extra_args{end+1} = '-I"D:\OneDrive - Nexus365\Work\Code\dsm\bg_unwrapping\libs\curve_extraction\Eigen"';
 else
-    % Linux settings.
+    % Linux settings - currently set to default locations
     extra_args{end+1} = '-L/usr/local/lib';
     extra_args{end+1} = '-I/usr/local/include/spii-thirdparty';
     extra_args{end+1} = '-I/usr/local/include/eigen3';
@@ -140,13 +156,14 @@ for i = 1 : length(sources)
 end
 
 %% Compile
+compile_file = true; % Force compile
 if compile_file
     disp(['Compiling ' cpp_file_name '...']);
 
     mex_argument = {'mex', ...
-        cpp_file_name,  ...
+        ['"' cpp_file_name '"'],  ...
         '-outdir', ...
-        base_path, ...
+        ['"' base_path '"'], ...
         '-largeArrayDims', ...
         extra_args{:},...
         include_folders{:}, ...
