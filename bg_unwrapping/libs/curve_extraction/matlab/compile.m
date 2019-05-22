@@ -156,7 +156,7 @@ for i = 1 : length(sources)
 end
 
 %% Compile
-compile_file = true; % Force compile
+%compile_file = true; % Force compile
 if compile_file
     disp(['Compiling ' cpp_file_name '...']);
 
