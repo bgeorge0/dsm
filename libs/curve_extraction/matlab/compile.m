@@ -12,14 +12,14 @@ function compile(base_name, sources, extra_args)
 % This is useful during development.
 compile_on_edit = false;
 
-base_path = [fileparts(mfilename('fullpath')) filesep 'library'];       
+base_path = [fileparts(mfilename('fullpath')) filesep 'library'];
 
 if nargin < 2
-	sources = {};
+    sources = {};
 end
 
 if nargin < 3
-	extra_args = {};
+    extra_args = {};
 end
 
 % Windows note: MatLabs recommended compiler:
@@ -29,7 +29,7 @@ end
 %
 % For Matlab 2013a:
 % Visual Studio Pro 2013  has OpenMP support:
-% Note visual studio version support depends on your Matlab version. 
+% Note visual studio version support depends on your Matlab version.
 %
 % --
 use_openmp = true;
@@ -40,15 +40,15 @@ if ~ispc
         extra_args{end+1} = ' -lgomp';
         CXXFLAGS = [CXXFLAGS ' -fopenmp'];
     end
-
+    
     extra_args{end+1} = ['CXXFLAGS="\$CXXFLAGS ' CXXFLAGS '"'];
-
+    
 else
-	% NOMINMAX fixes windows.h if it gets included.
-	extra_args{end+1} = '-DNOMINMAX=1';
-	if (use_openmp)
-		extra_args{end+1} = 'COMPFLAGS="$COMPFLAGS /openmp"';
-	end
+    % NOMINMAX fixes windows.h if it gets included.
+    extra_args{end+1} = '-DNOMINMAX=1';
+    if (use_openmp)
+        extra_args{end+1} = 'COMPFLAGS="$COMPFLAGS /openmp"';
+    end
 end
 
 if (use_openmp)
@@ -66,7 +66,7 @@ if ispc
     % Point this to your Eigen include directory.
     %extra_args{end+1} = '-I"C:\Program Files\Eigen"';
     %%%%%%%%
-
+    
     % Default installation directories for Spii and curve_extraction libraries.
     %extra_args{end+1} = '-I"C:\Program Files\curve_extraction\include"';
     %extra_args{end+1} = '-I"C:\Program Files\SPII\include"';
@@ -86,15 +86,28 @@ if ispc
         extra_args{end+1} = ['-L"' current_dir filesep '..\x32\windows\curve_extraction\lib"'];
         extra_args{end+1} = ['-L"' current_dir filesep '..\x32\windows\SPII\lib"'];
     end
-
-    extra_args{end+1} = '-I"D:\OneDrive - Nexus365\Work\Code\dsm\bg_unwrapping\libs\curve_extraction\Eigen"';
+    
+    % Same path for pc and linux
+    extra_args{end+1} = ['-I"' current_dir filesep '..' filesep 'Eigen"'];
 else
     % Linux settings - currently set to default locations
-    extra_args{end+1} = '-L/usr/local/lib';
-    extra_args{end+1} = '-I/usr/local/include/spii-thirdparty';
-    extra_args{end+1} = '-I/usr/local/include/eigen3';
-    extra_args{end+1} = '-I/usr/local/include/spii';
-    extra_args{end+1} = '-I/usr/local/include/curve_extraction';
+    if contains(computer, '64')
+        %extra_args{end+1} = '-L/usr/local/lib';
+        extra_args{end+1} =  ['-L"' current_dir filesep '../x64/linux/lib"'];
+        extra_args{end+1} =  ['-I"' current_dir filesep '../x64/linux/include/curve_extraction"'];
+        extra_args{end+1} =  ['-I"' current_dir filesep '../x64/linux/include/spii"'];
+        extra_args{end+1} =  ['-I"' current_dir filesep '../x64/linux/spii-thirdparty"'];
+        %extra_args{end+1} = '-I/usr/local/include/spii-thirdparty';
+        %extra_args{end+1} = '-I/usr/local/include/eigen3';
+        %extra_args{end+1} = '-I/usr/local/include/spii';
+        %extra_args{end+1} = '-I/usr/local/include/curve_extraction';
+    else
+        fprintf('Linux 32-bit platforms not supported\n')
+        return
+    end
+    
+    % Same path for pc and linux
+    extra_args{end+1} = ['-I"' current_dir filesep '..' filesep 'Eigen"'];
 end
 
 % Link with external libaries spii and curve_extraction.
@@ -128,38 +141,38 @@ cpp_modified = cpp_file.datenum;
 compile_file = false;
 if ~exist(mex_file_name, 'file')
     disp(mex_file_name)
-        disp('Mex file not found; compiling...');
-        compile_file = true;
+    disp('Mex file not found; compiling...');
+    compile_file = true;
 end
 
 if (compile_on_edit)
-	if  mex_modified < cpp_modified
-		disp('C++ file modfied later than Mex file; recompiling...');
-		compile_file = true;
-	end
+    if  mex_modified < cpp_modified
+        disp('C++ file modfied later than Mex file; recompiling...');
+        compile_file = true;
+    end
 end
 
 %% Checking additional c++ files
 include_folders = {};
 for i = 1 : length(sources);
-	include_folders{i} = ['-I' base_path filesep fileparts(sources{i}) filesep];
-	sources{i} = [base_path filesep sources{i}];
+    include_folders{i} = ['-I' base_path filesep fileparts(sources{i}) filesep];
+    sources{i} = [base_path filesep sources{i}];
 end
 
 % Check all dependend files
 for i = 1 : length(sources)
-	cpp_file = dir(sources{i});
-	cpp_modified = cpp_file.datenum;
-	if mex_modified < cpp_modified
-		compile_file = true;
-	end
+    cpp_file = dir(sources{i});
+    cpp_modified = cpp_file.datenum;
+    if mex_modified < cpp_modified
+        compile_file = true;
+    end
 end
 
 %% Compile
 %compile_file = true; % Force compile
 if compile_file
     disp(['Compiling ' cpp_file_name '...']);
-
+    
     mex_argument = {'mex', ...
         ['"' cpp_file_name '"'],  ...
         '-outdir', ...
@@ -177,7 +190,7 @@ if compile_file
     % Using eval to allow for arguments changeing c and c++ flags
     disp(['mex command > ' mex_argument{:}]);
     eval([mex_argument{:}])
-
+    
     disp('done.');
 end
 
