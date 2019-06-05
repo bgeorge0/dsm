@@ -1,4 +1,16 @@
 function UNWRAPPING_DATA = bg_unwrapping(UNWRAPPING_DATA)
+
+% Check that python is working and numpy is avaliable
+tic
+disp('Checking for python + numpy')
+try
+    py.numpy.array(0);
+catch
+    fprintf('Something wrong with python + numpy installation\n')
+    return
+end
+toc
+
 % bg_unwrapping
 % Make sure we've got the files loaded
 addpath(genpath(pwd));
