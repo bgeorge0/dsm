@@ -26,11 +26,11 @@ if ~exist('UNWRAPPING_DATA','var') || isempty(UNWRAPPING_DATA)
     UNWRAPPING_DATA.as_points.unwrap_centre = (max(UNWRAPPING_DATA.as_points.point_cloud) + min(UNWRAPPING_DATA.as_points.point_cloud))/2;
   
     % Set some options
-    UNWRAPPING_DATA.options.SLICES      = 30;
-    UNWRAPPING_DATA.options.RAYS        = 30;
-    UNWRAPPING_DATA.voxelise_size_x     = 100;
-    UNWRAPPING_DATA.voxelise_size_y     = 100;
-    UNWRAPPING_DATA.voxelise_size_z     = 100;
+    UNWRAPPING_DATA.options.SLICES      = 60;
+    UNWRAPPING_DATA.options.RAYS        = 60;
+    UNWRAPPING_DATA.voxelise_size_x     = 150;
+    UNWRAPPING_DATA.voxelise_size_y     = 150;
+    UNWRAPPING_DATA.voxelise_size_z     = 150;
 else
     % Assume that UNWRAPPING_DATA is initialised
 end
