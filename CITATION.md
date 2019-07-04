@@ -4,6 +4,7 @@ Witztum A, George B, Warren S, Partridge M, Hawkins MA. Unwrapping 3D complex ho
 
 For LaTex users, this BibTex entry can be used:
 
+```
 @article{witztum2016unwrapping,
   title={Unwrapping 3D complex hollow organs for spatial dose surface analysis},
   author={Witztum, Alon and George, Ben and Warren, Samantha and Partridge, Michael and Hawkins, MA},
@@ -14,3 +15,4 @@ For LaTex users, this BibTex entry can be used:
   year={2016},
   publisher={Wiley Online Library}
 }
+```
