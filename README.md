@@ -14,3 +14,9 @@ Software for producing dose surface maps of complex hollow organs.
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+If you use this project, please provide a citation to the following article:
+
+    Witztum A, George B, Warren S, Partridge M, Hawkins MA.
+    Unwrapping 3D complex hollow organs for spatial dose surface analysis.
+    Medical physics. 2016 Nov;43(11):6009-16.
